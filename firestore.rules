@@ -1,0 +1,184 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email == 'tanviitagikar0305@gmail.com')
+      );
+    }
+
+    // Entity validation helpers
+    function isValidProject(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.number is string && data.number.size() <= 16 &&
+             data.name is string && data.name.size() <= 120 &&
+             data.category is string && data.category.size() <= 60 &&
+             (!('mediaType' in data) || data.mediaType is string) &&
+             (!('dropTypeId' in data) || data.dropTypeId == null || (data.dropTypeId is string && data.dropTypeId.size() <= 128)) &&
+             (!('dropTypeName' in data) || data.dropTypeName == null || (data.dropTypeName is string && data.dropTypeName.size() <= 128)) &&
+             (!('clientName' in data) || data.clientName == null || (data.clientName is string && data.clientName.size() <= 120)) &&
+             (!('year' in data) || data.year == null || (data.year is string && data.year.size() <= 10)) &&
+             (!('description' in data) || data.description == null || (data.description is string && data.description.size() <= 4000)) &&
+             (!('col1Image1' in data) || data.col1Image1 == null || (data.col1Image1 is string && data.col1Image1.size() <= 2000000)) &&
+             (!('col1Image2' in data) || data.col1Image2 == null || (data.col1Image2 is string && data.col1Image2.size() <= 2000000)) &&
+             (!('col2Image' in data) || data.col2Image == null || (data.col2Image is string && data.col2Image.size() <= 2000000)) &&
+             (!('videoUrl' in data) || data.videoUrl == null || (data.videoUrl is string && data.videoUrl.size() <= 2000000)) &&
+             (!('liveUrl' in data) || data.liveUrl == null || (data.liveUrl is string && data.liveUrl.size() <= 500)) &&
+             (!('updatedAt' in data) || data.updatedAt == null || data.updatedAt is string) &&
+             (!('tools' in data) || data.tools is list);
+    }
+
+    function isValidDropType(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() <= 120 &&
+             (!('slug' in data) || data.slug is string) &&
+             (!('icon' in data) || data.icon is string) &&
+             (!('color' in data) || data.color is string) &&
+             (!('textColor' in data) || data.textColor is string) &&
+             (!('order' in data) || data.order is number) &&
+             (!('description' in data) || data.description is string) &&
+             (!('updatedAt' in data) || data.updatedAt is string);
+    }
+
+    function isValidConcertPhoto(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.filename is string && data.filename.size() <= 256 &&
+             data.title is string && data.title.size() <= 160 &&
+             data.artist is string && data.artist.size() <= 120 &&
+             data.url is string && data.url.size() <= 2000000 &&
+             (!('category' in data) || (data.category is string && data.category.size() <= 60)) &&
+             (!('venue' in data) || (data.venue is string && data.venue.size() <= 120)) &&
+             (!('year' in data) || (data.year is string && data.year.size() <= 10)) &&
+             (!('description' in data) || (data.description is string && data.description.size() <= 1000));
+    }
+
+    function isValidService(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.number is string && data.number.size() <= 16 &&
+             data.name is string && data.name.size() <= 120 &&
+             data.description is string && data.description.size() <= 1000 &&
+             (!('pricingEstimate' in data) || data.pricingEstimate == null || (data.pricingEstimate is string && data.pricingEstimate.size() <= 100)) &&
+             (!('updatedAt' in data) || data.updatedAt == null || data.updatedAt is string);
+    }
+
+    function isValidTestimonial(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.clientName is string && data.clientName.size() <= 120 &&
+             data.quote is string && data.quote.size() <= 1500 &&
+             data.rating is number && data.rating >= 1 && data.rating <= 5 &&
+             (!('role' in data) || data.role == null || (data.role is string && data.role.size() <= 120)) &&
+             (!('company' in data) || data.company == null || (data.company is string && data.company.size() <= 120)) &&
+             (!('projectRef' in data) || data.projectRef == null || (data.projectRef is string && data.projectRef.size() <= 120)) &&
+             (!('avatar' in data) || data.avatar == null || (data.avatar is string && data.avatar.size() <= 2000000)) &&
+             (!('order' in data) || data.order == null || data.order is number) &&
+             (!('createdAt' in data) || data.createdAt == null || data.createdAt is string);
+    }
+
+    function isValidSiteSettings(data) {
+      return (!('contactInfo' in data) || data.contactInfo is map) &&
+             (!('aboutData' in data) || data.aboutData is map) &&
+             (!('heroPhoto' in data) || data.heroPhoto == null || data.heroPhoto is string) &&
+             (!('email' in data) || data.email is string) &&
+             (!('location' in data) || data.location is string) &&
+             (!('updatedAt' in data) || data.updatedAt is string);
+    }
+
+    function isValidInquiry(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() >= 1 && data.name.size() <= 120 &&
+             data.email is string && data.email.size() >= 3 && data.email.size() <= 120 &&
+             data.message is string && data.message.size() >= 1 && data.message.size() <= 5000 &&
+             (!('phone' in data) || data.phone == null || (data.phone is string && data.phone.size() <= 50)) &&
+             (!('service' in data) || data['service'] == null || (data['service'] is string && data['service'].size() <= 120)) &&
+             (!('budget' in data) || data.budget == null || (data.budget is string && data.budget.size() <= 100)) &&
+             (!('conversationTranscript' in data) || data.conversationTranscript == null || (data.conversationTranscript is string && data.conversationTranscript.size() <= 10000)) &&
+             (!('deliveryMethod' in data) || data.deliveryMethod == null || (data.deliveryMethod is string && data.deliveryMethod.size() <= 50)) &&
+             (!('createdAt' in data) || data.createdAt == null || data.createdAt is string) &&
+             (!('status' in data) || data.status == null || (data.status is string && data.status.size() <= 30));
+    }
+
+    // Projects collection
+    match /projects/{projectId} {
+      allow read: if true;
+      allow create: if isValidId(projectId) && isValidProject(incoming());
+      allow update: if isValidId(projectId) && isValidProject(incoming());
+      allow delete: if isValidId(projectId);
+    }
+
+    // Drop types collection (Photos, Videos, Freelancer, Concerts, etc.)
+    match /drop_types/{typeId} {
+      allow read: if true;
+      allow create: if isValidId(typeId) && isValidDropType(incoming());
+      allow update: if isValidId(typeId) && isValidDropType(incoming());
+      allow delete: if isValidId(typeId);
+    }
+
+    // Concert photos collection
+    match /concert_photos/{photoId} {
+      allow read: if true;
+      allow create: if isValidId(photoId) && isValidConcertPhoto(incoming());
+      allow update: if isValidId(photoId) && isValidConcertPhoto(incoming());
+      allow delete: if isValidId(photoId);
+    }
+
+    // Services collection
+    match /services/{serviceId} {
+      allow read: if true;
+      allow create: if isValidId(serviceId) && isValidService(incoming());
+      allow update: if isValidId(serviceId) && isValidService(incoming());
+      allow delete: if isValidId(serviceId);
+    }
+
+    // Testimonials collection
+    match /testimonials/{testimonialId} {
+      allow read: if true;
+      allow create: if isValidId(testimonialId) && isValidTestimonial(incoming());
+      allow update: if isValidId(testimonialId) && isValidTestimonial(incoming());
+      allow delete: if isValidId(testimonialId);
+    }
+
+    // Settings collection
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create: if isValidId(settingId) && isValidSiteSettings(incoming());
+      allow update: if isValidId(settingId) && isValidSiteSettings(incoming());
+      allow delete: if isValidId(settingId);
+    }
+
+    // Inquiries collection (Client contact briefs, PII protected)
+    match /inquiries/{inquiryId} {
+      allow read: if isAdmin();
+      allow create: if isValidId(inquiryId) && isValidInquiry(incoming());
+      allow update, delete: if isAdmin() && isValidId(inquiryId);
+    }
+
+    // Admins collection
+    match /admins/{adminId} {
+      allow read: if isAdmin();
+      allow write: if isAdmin() && isValidId(adminId);
+    }
+  }
+}

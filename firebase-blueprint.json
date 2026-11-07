@@ -1,0 +1,158 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Project",
+      "description": "A featured portfolio drop showcasing visual editing, 3D systems, or direction work",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "description": "Unique identifier" },
+        "number": { "type": "string", "maxLength": 16, "description": "Drop number like 01" },
+        "name": { "type": "string", "maxLength": 120, "description": "Project title" },
+        "category": { "type": "string", "maxLength": 60, "description": "Category such as Commercial, Client, Personal" },
+        "mediaType": { "type": "string", "maxLength": 20, "description": "photos or videos" },
+        "year": { "type": "string", "maxLength": 10, "description": "Release year" },
+        "clientName": { "type": "string", "maxLength": 120, "description": "Client or brand name" },
+        "tools": { "type": "array", "description": "Software tools used" },
+        "description": { "type": "string", "maxLength": 2000, "description": "Project summary and narrative" },
+        "col1Image1": { "type": "string", "maxLength": 2000000, "description": "First preview image URL or data URI" },
+        "col1Image2": { "type": "string", "maxLength": 2000000, "description": "Second preview image URL or data URI" },
+        "col2Image": { "type": "string", "maxLength": 2000000, "description": "Feature poster image URL or data URI" },
+        "videoUrl": { "type": "string", "maxLength": 2000000, "description": "Video reel URL or media data" },
+        "updatedAt": { "type": "string", "description": "Timestamp of last modification" }
+      },
+      "required": ["id", "number", "name", "category", "mediaType"]
+    },
+    "ConcertPhoto": {
+      "title": "ConcertPhoto",
+      "description": "Concert photography media item displayed in the marquee gallery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "description": "Unique photo identifier" },
+        "filename": { "type": "string", "maxLength": 256, "description": "Original image filename" },
+        "title": { "type": "string", "maxLength": 160, "description": "Performance or capture title" },
+        "artist": { "type": "string", "maxLength": 120, "description": "Artist or performer name" },
+        "category": { "type": "string", "maxLength": 60, "description": "Tour or genre category" },
+        "venue": { "type": "string", "maxLength": 120, "description": "Venue name" },
+        "year": { "type": "string", "maxLength": 10, "description": "Performance year" },
+        "description": { "type": "string", "maxLength": 1000, "description": "Capture details" },
+        "url": { "type": "string", "maxLength": 2000000, "description": "High-fidelity photo URL or data URI" },
+        "updatedAt": { "type": "string", "description": "Timestamp of last modification" }
+      },
+      "required": ["id", "filename", "title", "artist", "url"]
+    },
+    "Service": {
+      "title": "Service",
+      "description": "Creative visual or post-production service offering",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "description": "Unique service ID" },
+        "number": { "type": "string", "maxLength": 16, "description": "Service index string e.g. 01" },
+        "name": { "type": "string", "maxLength": 120, "description": "Service name" },
+        "description": { "type": "string", "maxLength": 1000, "description": "Service deliverables description" },
+        "pricingEstimate": { "type": "string", "maxLength": 100, "description": "Pricing guide or rate tier" },
+        "updatedAt": { "type": "string", "description": "Timestamp of last modification" }
+      },
+      "required": ["id", "number", "name", "description"]
+    },
+    "Testimonial": {
+      "title": "Testimonial",
+      "description": "Client review or recommendation for Ronny and Onset Media",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "description": "Unique testimonial ID" },
+        "clientName": { "type": "string", "maxLength": 120, "description": "Client full name" },
+        "role": { "type": "string", "maxLength": 120, "description": "Client job title" },
+        "company": { "type": "string", "maxLength": 120, "description": "Organization or studio" },
+        "quote": { "type": "string", "maxLength": 1500, "description": "Testimonial review text" },
+        "projectRef": { "type": "string", "maxLength": 120, "description": "Associated project or campaign" },
+        "rating": { "type": "number", "description": "Rating score between 1 and 5" },
+        "avatar": { "type": "string", "maxLength": 2000000, "description": "Client avatar image URL" },
+        "createdAt": { "type": "string", "description": "Date created" }
+      },
+      "required": ["id", "clientName", "quote", "rating"]
+    },
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Global portfolio configuration, contact details, and hero portraits",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 120, "description": "Direct contact email" },
+        "phone": { "type": "string", "maxLength": 40, "description": "Phone number" },
+        "whatsapp": { "type": "string", "maxLength": 40, "description": "WhatsApp contact number" },
+        "instagram": { "type": "string", "maxLength": 120, "description": "Instagram handle or URL" },
+        "location": { "type": "string", "maxLength": 120, "description": "Operating location hub" },
+        "heroPhoto": { "type": "string", "maxLength": 2000000, "description": "Active hero section portrait" },
+        "founderPhoto": { "type": "string", "maxLength": 2000000, "description": "Meet the founder portrait" },
+        "aboutHeadline": { "type": "string", "maxLength": 160, "description": "About section headline" },
+        "aboutParagraph": { "type": "string", "maxLength": 2000, "description": "Founder narrative story" },
+        "updatedAt": { "type": "string", "description": "Timestamp of modification" }
+      },
+      "required": ["email", "location"]
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "Client inquiry submitted via the portfolio contact modal",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "description": "Unique inquiry ID" },
+        "name": { "type": "string", "maxLength": 120, "description": "Prospective client name" },
+        "email": { "type": "string", "maxLength": 120, "description": "Contact email" },
+        "phone": { "type": "string", "maxLength": 50, "description": "Client phone or WhatsApp number" },
+        "service": { "type": "string", "maxLength": 120, "description": "Requested service" },
+        "message": { "type": "string", "maxLength": 5000, "description": "Project brief and details" },
+        "budget": { "type": "string", "maxLength": 100, "description": "Estimated budget" },
+        "conversationTranscript": { "type": "string", "maxLength": 10000, "description": "Conversational dialogue transcript" },
+        "deliveryMethod": { "type": "string", "maxLength": 50, "description": "Notification delivery method" },
+        "createdAt": { "type": "string", "description": "Submission timestamp" },
+        "status": { "type": "string", "maxLength": 20, "description": "Inquiry status: new, read, replied" }
+      },
+      "required": ["id", "name", "email", "message"]
+    },
+    "DropType": {
+      "title": "DropType",
+      "description": "Category or content type for Drops (e.g. Photos, Videos, Freelancer, Concerts)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "description": "Unique type ID" },
+        "name": { "type": "string", "maxLength": 100, "description": "Display name of the type" },
+        "slug": { "type": "string", "maxLength": 100, "description": "URL-friendly slug" },
+        "icon": { "type": "string", "maxLength": 50, "description": "Icon identifier" },
+        "color": { "type": "string", "maxLength": 30, "description": "Badge/accent color" },
+        "textColor": { "type": "string", "maxLength": 30, "description": "Text color" },
+        "order": { "type": "number", "description": "Display order index" },
+        "description": { "type": "string", "maxLength": 500, "description": "Category description tagline" }
+      },
+      "required": ["id", "name", "slug"]
+    }
+  },
+  "firestore": {
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "Portfolio work drops showcase"
+    },
+    "/drop_types/{typeId}": {
+      "schema": "DropType",
+      "description": "Dynamic categories for Drops tab"
+    },
+    "/concert_photos/{photoId}": {
+      "schema": "ConcertPhoto",
+      "description": "Live concert gallery images for the marquee"
+    },
+    "/services/{serviceId}": {
+      "schema": "Service",
+      "description": "Available creative visual production services"
+    },
+    "/testimonials/{testimonialId}": {
+      "schema": "Testimonial",
+      "description": "Client reviews and industry recommendations"
+    },
+    "/settings/{settingId}": {
+      "schema": "SiteSettings",
+      "description": "Global portfolio configuration and site content"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "Inquiry",
+      "description": "Contact submissions and booking inquiries"
+    }
+  }
+}

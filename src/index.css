@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body, #root {
+    background-color: #F8F6F0;
+    color: #2D2E42;
+    font-family: 'Kanit', sans-serif;
+    min-height: 100%;
+    overflow-x: clip;
+    scroll-behavior: smooth;
+  }
+
+  ::selection {
+    background-color: #F7C59F;
+    color: #111215;
+  }
+}
+
+.hero-heading {
+  background: linear-gradient(180deg, #181924 0%, #35364D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Hero section soft-peach fill with bold black outline */
+.hero-outline-title {
+  color: #F7C59F;
+  -webkit-text-fill-color: #F7C59F;
+  -webkit-text-stroke: 4px #111215;
+  paint-order: stroke fill;
+}
+
+@media (min-width: 640px) {
+  .hero-outline-title {
+    -webkit-text-stroke: 5px #111215;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-outline-title {
+    -webkit-text-stroke: 6px #111215;
+  }
+}
+
+/* Funky Neo-Brutalist Sticker & Card Utilities */
+.funky-sticker {
+  border: 2px solid #111215;
+  box-shadow: 3px 3px 0px #111215;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.funky-sticker:hover {
+  transform: translate(-2px, -2px) rotate(1deg);
+  box-shadow: 5px 5px 0px #111215;
+}
+
+.funky-card {
+  border: 2px solid #111215;
+  box-shadow: 5px 5px 0px #111215;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.funky-card:hover {
+  box-shadow: 8px 8px 0px #111215;
+  transform: translateY(-2px);
+}
+
+.funky-button {
+  border: 2px solid #111215;
+  box-shadow: 4px 4px 0px #111215;
+  transition: all 0.15s ease-out;
+}
+
+.funky-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #111215;
+}
+
+.funky-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #111215;
+}
+
+/* Washi Tape Accent */
+.funky-tape {
+  background: rgba(210, 255, 58, 0.88);
+  border-top: 1px dashed rgba(17, 18, 21, 0.25);
+  border-bottom: 1px dashed rgba(17, 18, 21, 0.25);
+  box-shadow: 0 2px 6px rgba(17, 18, 21, 0.08);
+  backdrop-filter: blur(2px);
+}
+
+.funky-tape-orange {
+  background: rgba(255, 85, 0, 0.88);
+  border-top: 1px dashed rgba(255, 255, 255, 0.3);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 6px rgba(17, 18, 21, 0.08);
+  backdrop-filter: blur(2px);
+}
+
+/* Holographic / Iridescent badge */
+.holographic-badge {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 25%, #4ECDC4 50%, #B066FF 75%, #FF6B6B 100%);
+  background-size: 300% 300%;
+  animation: holoShift 6s ease infinite;
+  border: 2px solid #111215;
+  box-shadow: 3px 3px 0px #111215;
+}
+
+@keyframes holoShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* CRT Scanlines for Showreel */
+.crt-scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.04),
+    rgba(0, 255, 0, 0.02),
+    rgba(0, 0, 255, 0.04)
+  );
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Infinite Marquee Animation */
+@keyframes marqueeScroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  width: max-content;
+  animation: marqueeScroll 22s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Flash animation */
+@keyframes cameraFlashAnim {
+  0% { opacity: 0.95; }
+  100% { opacity: 0; }
+}
+
+.camera-flash-overlay {
+  animation: cameraFlashAnim 0.35s ease-out forwards;
+}
+
+/* Smooth elegant scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F8F6F0;
+}
+::-webkit-scrollbar-thumb {
+  background: #DCD9B8;
+  border-radius: 9999px;
+  border: 2px solid #F8F6F0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8FA3A8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

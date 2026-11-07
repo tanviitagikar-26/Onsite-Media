@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Jack -- 3D Creator",
+  "description": "Portfolio landing page for Jack, a 3D creator and visual artist crafting striking 3D modeling, photorealistic rendering, dynamic motion design, and brand experiences.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
